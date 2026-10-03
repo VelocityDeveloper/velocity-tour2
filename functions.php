@@ -22,6 +22,7 @@
  $includes = [
 	'enqueue.php',
 	'function-child.php',
+	'customizer.php',
 	'shortcodes.php'
  ];
 
