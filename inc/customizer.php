@@ -50,7 +50,6 @@ add_action('customize_register', function ($wp_customize) {
     $wp_customize->add_section('section_headervelocity', [
         'panel'       => 'panel_velocity',
         'title'       => __('Header', 'justg'),
-        'description' => __('Gambar header utama diatur di bagian Header Image.', 'justg'),
         'priority'    => 20,
     ]);
     $wp_customize->add_setting('image_bannerheader', [
@@ -153,6 +152,14 @@ add_action('customize_register', function ($wp_customize) {
     }
     $wp_customize->remove_control('custom_logo');
     $wp_customize->remove_control('display_header_text');
+
+    // Header Image bawaan WordPress pindah ke bagian Header, di atas Banner Header.
+    $header_image = $wp_customize->get_control('header_image');
+    if ($header_image) {
+        $header_image->section = 'section_headervelocity';
+        $header_image->priority = 5;
+        $wp_customize->remove_section('header_image');
+    }
 
     // Digantikan Primary Color & Website Background di atas.
     $wp_customize->remove_control('primary_color');
