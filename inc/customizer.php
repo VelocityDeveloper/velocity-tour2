@@ -74,8 +74,8 @@ add_action('customize_register', function ($wp_customize) {
         'sanitize_callback' => 'sanitize_hex_color',
     ]);
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'color_theme', [
-        'label'       => __('Theme Color', 'justg'),
-        'description' => __('Menu, judul widget, tombol, dan footer.', 'justg'),
+        'label'       => __('Primary Color', 'justg'),
+        'description' => __('Warna utama tema (--color-theme & --bs-primary): menu, judul widget, tombol, dan footer.', 'justg'),
         'section'     => 'section_colorvelocity',
     ]));
 
@@ -154,7 +154,7 @@ add_action('customize_register', function ($wp_customize) {
     $wp_customize->remove_control('custom_logo');
     $wp_customize->remove_control('display_header_text');
 
-    // Digantikan Theme Color & Website Background di atas.
+    // Digantikan Primary Color & Website Background di atas.
     $wp_customize->remove_control('primary_color');
     $wp_customize->remove_section('velocity_section_background');
     foreach (['global_panel', 'panel_header', 'panel_footer', 'panel_antispam'] as $panel) {
@@ -168,7 +168,8 @@ add_action('customize_register', function ($wp_customize) {
  */
 add_action('wp_head', function () {
     $warna = sanitize_hex_color(get_theme_mod('color_theme', VELOCITY_TOUR2_WARNA)) ?: VELOCITY_TOUR2_WARNA;
-    $css = ':root{--color-theme:' . $warna . ';--bs-primary:' . $warna . ';}'
+    $rgb = implode(',', array_map('hexdec', str_split(ltrim(strlen($warna) === 4 ? preg_replace('/([0-9a-f])/i', '$1$1', $warna) : $warna, '#'), 2)));
+    $css = ':root{--color-theme:' . $warna . ';--bs-primary:' . $warna . ';--bs-primary-rgb:' . $rgb . ';--primary:' . $warna . ';}'
         . '.border-color-theme{--bs-border-color:' . $warna . ';}';
 
     $latar = get_theme_mod('background_themewebsite', []);
